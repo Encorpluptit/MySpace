@@ -1,0 +1,91 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  ci:
+    runs-on: alpine-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run test-api
+        run: make api-test
+
+      - name: Install
+        run: mkdir -p build && cd build && conan install ./ressources --build=missing
+
+#  cd:
+#    runs-on: ubuntu-latest
+#    needs: ci
+#
+#    steps:
+#      - uses: actions/checkout@v2
+#
+#      - name: Docker login
+#        run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+#
+#      - name: Build
+#        run: docker build -t back .
+#
+#      - name: Tags
+#        run: |
+#          docker tag epitech-babel ${{ secrets.DOCKER_USER }}/epitech-babel:${{ github.sha }}
+#          docker tag epitech-babel ${{ secrets.DOCKER_USER }}/epitech-babel:latest
+#      - name: Push
+#        run: |
+#          docker push ${{ secrets.DOCKER_USER }}/back:${{ github.sha }}
+#          docker push ${{ secrets.DOCKER_USER }}/back:latest
+
+#      - name: Makefile -> mouli-install
+#        run: make mouli-install
+#
+#      - name: Makefile -> Make
+#        run: make
+#
+#      - name: Makefile -> Fclean
+#        run: make fclean
+#
+#      - name: Makefile -> Re
+#        run: make re
+#
+#      - name: Makefile -> moul
+#        run: make mouli
+#
+##      - name: Makefile -> Tests_run
+##        run: make tests_run
+#
+#      - name: Upload Coverage
+#        env:
+#          CODECOV_TOKEN: "3a429422-1e0a-4743-9294-3888cd37f9b4"
+#        run: |
+#          make re
+#          curl -s https://codecov.io/bash | bash
+
+#  blih:
+#    runs-on: ubuntu-latest
+#    needs: build
+#    env:
+#      USER_GHUB: "Encorpluptit"
+#      USER_BLIH: "ugo.levi-cescutti@epitech.eu"
+#    steps:
+#      - uses: actions/checkout@v2
+#      - run: |
+#          which ssh-agent || ( sudo apt-get update -y && sudo apt-get install openssh-client -y)
+#          eval $(ssh-agent -s)
+#          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+#          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+#          chmod 700 ~/.ssh/id_rsa && echo "${{ secrets.SSH_PUBLIC_KEY }}" > ~/.ssh/id_rsa.pub
+#          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+#      - name: Set Github Repo Name in env
+#        run:   echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
+#        shell: bash
+#      - name: Push Blih
+#        run: bash ./.github/scripts/GithubToBlih.sh $USER_GHUB  $REPOSITORY_NAME $USER_BLIH $REPOSITORY_NAME
+#        shell: bash
