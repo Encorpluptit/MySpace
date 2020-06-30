@@ -2,12 +2,16 @@ package main
 
 import (
 	"MySpace-Api/controllers"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 )
 
 func main() {
 	server := new(controllers.Server)
+	if godotenv.Load() != nil {
+		log.Fatalf("Cannot Load .env file.")
+	}
 	server.Init()
 
 	defer server.Destroy()

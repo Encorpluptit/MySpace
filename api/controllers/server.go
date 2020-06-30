@@ -17,7 +17,7 @@ type Server struct {
 }
 
 func (s *Server) Init() {
-	s.Port = os.Getenv("PORT")
+	s.Port = os.Getenv("API_PORT")
 	if s.Port == "" {
 		s.Port = "8080"
 		log.Printf("Defaulting to port %s", s.Port)
@@ -46,7 +46,7 @@ func (s *Server) initialiseRoutes() {
 
 	// Home Route
 	s.Router.HandleFunc("/", middlewares.SetMiddlewareJSON(Home)).Methods("GET")
-	s.Router.HandleFunc("/hello", middlewares.NoCheck(Hello)).Methods("GET")
+	s.Router.HandleFunc("/hello", middlewares.SetMiddlewareJSON(Hello)).Methods("GET")
 
 	// Login Route
 	s.Router.HandleFunc("/login", middlewares.SetMiddlewareJSON(s.Login)).Methods("POST")
@@ -57,5 +57,6 @@ func (s *Server) initialiseRoutes() {
 	s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareJSON(s.GetUser)).Methods("GET")
 	s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(s.UpdateUser))).Methods("PUT")
 	s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareAuthentication(s.DeleteUser)).Methods("DELETE")
+	//s.Router.HandleFunc("/users/{id}", middlewares.SetMiddlewareAuthentication(s.DeleteUser)).Methods("DELETE")
 
 }

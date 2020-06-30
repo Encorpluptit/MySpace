@@ -5,6 +5,7 @@ import (
 	"MySpace-Api/responses"
 	"errors"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -39,6 +40,7 @@ func SetMiddlewareJSON(next http.HandlerFunc) http.HandlerFunc {
 func SetMiddlewareAuthentication(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := auth.TokenValid(r)
+		log.Print(err)
 		if err != nil {
 			responses.ERROR(w, http.StatusUnauthorized, errors.New("Unauthorized"))
 			return

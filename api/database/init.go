@@ -5,23 +5,9 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 )
-
-//// DB is the database pointer
-//var DB *gorm.DB
-
-//func migrateSchemas(DB *gorm.DB) {
-//	DB.AutoMigrate(&models.Users{})
-//}
-//
-//func createTables(DB *gorm.DB) {
-//	if !DB.HasTable(&models.Users{}) {
-//		DB.CreateTable(&models.Users{})
-//	}
-//}
 
 type Database struct {
 	DB       *gorm.DB
@@ -34,9 +20,9 @@ type Database struct {
 }
 
 func (db *Database) prepareEnv() (err error) {
-	if godotenv.Load() != nil {
-		log.Fatalf("Cannot Load .env file.")
-	}
+	//if godotenv.Load() != nil {
+	//	log.Fatalf("Cannot Load .env file.")
+	//}
 	db.Driver = os.Getenv("DB_DRIVER")
 	db.Name = os.Getenv("DB_NAME")
 	db.Host = os.Getenv("DB_HOST")
@@ -47,7 +33,6 @@ func (db *Database) prepareEnv() (err error) {
 }
 
 func (db *Database) Init() (err error) {
-	// TODO: manage Error Here
 	if err := db.prepareEnv(); err != nil {
 		return err
 	}
@@ -72,7 +57,6 @@ func (db *Database) Init() (err error) {
 		}
 	}
 	db.DB.Debug().AutoMigrate(&models.User{}) //database migration
-	//DB.Debug().AutoMigrate(&models.User{}, &models.Post{}) //database migration
 	return nil
 }
 

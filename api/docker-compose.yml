@@ -3,13 +3,8 @@ services:
   app:
     container_name: MySpace-api
     build: .
-#    environment:
-#      PORT: 8080
-#      DB_USER: ${DB_USER}
-#      DB_PASSWORD: ${DB_PASSWORD}
-#      DB_NAME: ${DB_NAME}
-#      DB_HOST: ${DB_HOST}
-#      DB_PORT: ${DB_PORT}
+    environment:
+      API_HOST: 8080
     ports:
       - 8080:8080
     restart: on-failure

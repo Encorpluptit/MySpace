@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -22,6 +23,10 @@ func (s *Server) CreateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	user := models.User{}
 	err = json.Unmarshal(body, &user)
+	log.Println(user)
+	log.Println(body)
+	log.Println(string(body))
+	log.Println(err)
 	if err != nil {
 		responses.ERROR(w, http.StatusUnprocessableEntity, err)
 		return
