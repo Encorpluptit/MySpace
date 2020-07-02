@@ -42,6 +42,7 @@ jobs:
         uses: anthonyvscode/newman-action@v1
         with:
           collection: api/__postman_tests__/MySpace.postman_collection.json
+          iterationCount: 5
           reporters: cli
 
       - name: Output summary to console
