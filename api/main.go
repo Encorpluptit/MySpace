@@ -5,13 +5,21 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
+	"os"
 )
 
+func loadEnv() {
+	if os.Getenv("API_STATE") != "RELEASE" {
+		if godotenv.Load() != nil {
+			log.Fatalf("Cannot Load .env file.")
+		}
+	}
+}
+
+//Start Server -> Serve routes -> Defer server destroy
 func main() {
 	server := new(controllers.Server)
-	if godotenv.Load() != nil {
-		log.Fatalf("Cannot Load .env file.")
-	}
+	loadEnv()
 	server.Init()
 
 	defer server.Destroy()

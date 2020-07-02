@@ -26,17 +26,27 @@ jobs:
       - name: Run test-api
         run: make api-test
 
+      - name: Run API Tests
+        id: run-newman
+        uses: anthonyvscode/newman-action@v1
+        with:
+          collection: api/__postman_tests__/MySpace.postman_collection.json
+          reporters: cli
+
+      - name: Output summary to console
+        run: echo ${{ steps.run-api-tests.outputs.summary }}
+
   cd:
     runs-on: ubuntu-latest
     needs: ci
-    env:
-      DB_HOST: "fullstack-postgres"
-      DB_DRIVER: "postgres"
-      API_SECRET: "98hbun98h"
-      DB_USER: "encorpluptit"
-      DB_PASSWORD: "password"
-      DB_NAME: "PersonalSpaceDB"
-      DB_PORT: "5432"
+#    env:
+#      DB_HOST: "fullstack-postgres"
+#      DB_DRIVER: "postgres"
+#      API_SECRET: "98hbun98h"
+#      DB_USER: "encorpluptit"
+#      DB_PASSWORD: "password"
+#      DB_NAME: "PersonalSpaceDB"
+#      DB_PORT: "5432"
 
     steps:
       - uses: actions/checkout@v2
@@ -46,39 +56,3 @@ jobs:
 
       - name: Makefile -> Fclean
         run: make fclean
-
-#
-#      - name: Makefile -> moul
-#        run: make mouli
-#
-##      - name: Makefile -> Tests_run
-##        run: make tests_run
-#
-#      - name: Upload Coverage
-#        env:
-#          CODECOV_TOKEN: "3a429422-1e0a-4743-9294-3888cd37f9b4"
-#        run: |
-#          make re
-#          curl -s https://codecov.io/bash | bash
-
-#  blih:
-#    runs-on: ubuntu-latest
-#    needs: build
-#    env:
-#      USER_GHUB: "Encorpluptit"
-#      USER_BLIH: "ugo.levi-cescutti@epitech.eu"
-#    steps:
-#      - uses: actions/checkout@v2
-#      - run: |
-#          which ssh-agent || ( sudo apt-get update -y && sudo apt-get install openssh-client -y)
-#          eval $(ssh-agent -s)
-#          mkdir -p ~/.ssh && chmod 700 ~/.ssh
-#          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-#          chmod 700 ~/.ssh/id_rsa && echo "${{ secrets.SSH_PUBLIC_KEY }}" > ~/.ssh/id_rsa.pub
-#          echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-#      - name: Set Github Repo Name in env
-#        run:   echo ::set-env name=REPOSITORY_NAME::$(echo "$GITHUB_REPOSITORY" | awk -F / '{print $2}' | sed -e "s/:refs//")
-#        shell: bash
-#      - name: Push Blih
-#        run: bash ./.github/scripts/GithubToBlih.sh $USER_GHUB  $REPOSITORY_NAME $USER_BLIH $REPOSITORY_NAME
-#        shell: bash

@@ -33,7 +33,7 @@ FROM golang:1.14.2-alpine as builder
 LABEL name='Golang 1.14 (alpine) Image'
 LABEL maintainer="Damien Bernard <damien.bernard@epitech.eu>"
 LABEL version="1.0"
-LABEL description="Intermediaire Image for Multi stage usage in PersonalSpace Api"
+LABEL description="Temporary Image for Multi stage usage in PersonalSpace Api"
 
 # Install git.
 # Git is required for fetching the dependencies.

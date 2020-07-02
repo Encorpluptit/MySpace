@@ -1,4 +1,4 @@
-package debug
+package api_errors
 
 import (
 	"fmt"

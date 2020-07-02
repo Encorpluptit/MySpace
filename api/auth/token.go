@@ -13,6 +13,10 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+type Token struct {
+	Token string
+}
+
 func CreateToken(userId uint32) (string, error) {
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
